@@ -2,7 +2,7 @@
 
 ## Overview
 
-TradeTracker Pro is a comprehensive stock trading portfolio management application built with React and Express. The application allows users to track their stock trades, monitor portfolio performance, analyze quarterly trading patterns, and manage both open and closed positions. It features a modern dashboard interface with real-time trade management capabilities and detailed performance analytics.
+TradeTracker Pro is a comprehensive stock trading portfolio management application built with React and Express. The application allows users to track their stock trades, monitor portfolio performance, analyze quarterly trading patterns, and manage both open and closed positions. It features capital management with cash allocation tracking, a modern dashboard interface with real-time trade management capabilities, detailed performance analytics, and a visual pie chart showing deployed vs. free capital.
 
 ## User Preferences
 
@@ -38,6 +38,7 @@ Preferred communication style: Simple, everyday language.
 - **Trades**: Complete trade lifecycle tracking including buy/sell prices, dates, quantities, and P&L calculations
 - **Portfolio Analytics**: Quarterly performance analysis, total portfolio value, and return calculations
 - **Trade Status**: Open and closed position tracking with real-time status updates
+- **Capital Management**: Total capital tracking, deployed vs. free capital allocation, and capital utilization metrics
 
 ### External Dependencies
 - **Database Provider**: Neon Database (serverless PostgreSQL) for production data storage

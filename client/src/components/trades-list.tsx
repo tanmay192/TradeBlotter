@@ -10,9 +10,12 @@ import { useToast } from "@/hooks/use-toast";
 import { type Trade } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
 import { formatCurrency, calculatePL, formatDateRange } from "@/lib/trade-utils";
+import EditTradeDialog from "@/components/edit-trade-dialog";
 
 export default function TradesList() {
   const [filter, setFilter] = useState<'all' | 'completed' | 'open'>('all');
+  const [selectedTrade, setSelectedTrade] = useState<Trade | null>(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -50,6 +53,16 @@ export default function TradesList() {
     if (window.confirm('Are you sure you want to delete this trade?')) {
       deleteTradeMutation.mutate(id);
     }
+  };
+
+  const handleEdit = (trade: Trade) => {
+    setSelectedTrade(trade);
+    setIsEditDialogOpen(true);
+  };
+
+  const handleCloseEditDialog = () => {
+    setSelectedTrade(null);
+    setIsEditDialogOpen(false);
   };
 
   const exportTrades = () => {
@@ -178,7 +191,12 @@ export default function TradesList() {
                       </TableCell>
                       <TableCell>
                         <div className="flex space-x-2">
-                          <Button size="sm" variant="ghost" className="p-2">
+                          <Button 
+                            size="sm" 
+                            variant="ghost" 
+                            className="p-2"
+                            onClick={() => handleEdit(trade)}
+                          >
                             <Edit className="w-4 h-4" />
                           </Button>
                           <Button 
@@ -209,6 +227,12 @@ export default function TradesList() {
           </div>
         )}
       </CardContent>
+      
+      <EditTradeDialog
+        trade={selectedTrade}
+        isOpen={isEditDialogOpen}
+        onClose={handleCloseEditDialog}
+      />
     </Card>
   );
 }

@@ -9,7 +9,12 @@ export default function SummaryCards() {
     queryKey: ['/api/trades'],
   });
 
-  const metrics = calculateTradeMetrics(trades);
+  const { data: capitalData } = useQuery<{ totalCapital: number }>({
+    queryKey: ['/api/capital'],
+  });
+
+  const totalCapital = capitalData?.totalCapital || 0;
+  const metrics = calculateTradeMetrics(trades, totalCapital);
 
   if (isLoading) {
     return (
@@ -27,14 +32,14 @@ export default function SummaryCards() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {/* Total Portfolio Value */}
+      {/* Total Capital */}
       <Card>
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-slate-600">Total Portfolio</p>
+              <p className="text-sm font-medium text-slate-600">Total Capital</p>
               <p className="text-2xl font-bold text-slate-800">
-                {formatCurrency(metrics.totalPortfolioValue)}
+                {formatCurrency(totalCapital)}
               </p>
             </div>
             <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -45,7 +50,7 @@ export default function SummaryCards() {
             <span className={`text-sm font-medium ${metrics.totalReturn >= 0 ? 'text-green-600' : 'text-red-600'}`}>
               {metrics.totalReturn >= 0 ? '+' : ''}{metrics.totalReturn.toFixed(2)}%
             </span>
-            <span className="text-xs text-slate-500 ml-2">total return</span>
+            <span className="text-xs text-slate-500 ml-2">portfolio return</span>
           </div>
         </CardContent>
       </Card>
@@ -73,13 +78,15 @@ export default function SummaryCards() {
         </CardContent>
       </Card>
 
-      {/* Open Positions */}
+      {/* Deployed Capital */}
       <Card>
         <CardContent className="p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-slate-600">Open Positions</p>
-              <p className="text-2xl font-bold text-slate-800">{metrics.openPositions}</p>
+              <p className="text-sm font-medium text-slate-600">Deployed Capital</p>
+              <p className="text-2xl font-bold text-slate-800">
+                {formatCurrency(metrics.deployedCapital)}
+              </p>
             </div>
             <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
               <Clock className="w-6 h-6 text-yellow-600" />
@@ -87,9 +94,9 @@ export default function SummaryCards() {
           </div>
           <div className="flex items-center mt-3">
             <span className="text-sm text-slate-600 font-medium">
-              {formatCurrency(metrics.openValue)}
+              {formatCurrency(metrics.freeCapital)}
             </span>
-            <span className="text-xs text-slate-500 ml-2">current value</span>
+            <span className="text-xs text-slate-500 ml-2">free capital</span>
           </div>
         </CardContent>
       </Card>

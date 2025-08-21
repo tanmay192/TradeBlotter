@@ -3,6 +3,7 @@ import SummaryCards from "@/components/summary-cards";
 import TradeEntryForm from "@/components/trade-entry-form";
 import TradesList from "@/components/trades-list";
 import QuarterlyAnalytics from "@/components/quarterly-analytics";
+import CapitalManagement from "@/components/capital-management";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp, Target, Activity } from "lucide-react";
 
@@ -21,6 +22,7 @@ export default function Dashboard() {
           </div>
           
           <div className="space-y-8">
+            <CapitalManagement />
             <QuarterlyAnalytics />
             
             {/* Trading Insights */}

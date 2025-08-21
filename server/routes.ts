@@ -72,6 +72,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get total capital
+  app.get("/api/capital", async (req, res) => {
+    try {
+      const capital = await storage.getTotalCapital();
+      res.json({ totalCapital: capital });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch capital" });
+    }
+  });
+
+  // Update total capital
+  app.patch("/api/capital", async (req, res) => {
+    try {
+      const { amount } = req.body;
+      if (typeof amount !== 'number' || amount < 0) {
+        return res.status(400).json({ message: "Invalid amount" });
+      }
+      const updatedCapital = await storage.updateTotalCapital(amount);
+      res.json({ totalCapital: updatedCapital });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to update capital" });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;

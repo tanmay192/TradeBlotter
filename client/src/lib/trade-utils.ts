@@ -54,13 +54,14 @@ export function formatDateRange(buyDate: string, sellDate?: string | null): stri
   return `${formattedBuyDate} - ${formattedSellDate}`;
 }
 
-export function calculateTradeMetrics(trades: Trade[]) {
+export function calculateTradeMetrics(trades: Trade[], totalCapital: number = 0) {
   let totalPortfolioValue = 0;
   let totalPL = 0;
   let bookedPL = 0;
   let mtmPL = 0;
   let openPositions = 0;
   let openValue = 0;
+  let deployedCapital = 0;
   let completedTrades = 0;
   let winningTrades = 0;
 
@@ -74,6 +75,7 @@ export function calculateTradeMetrics(trades: Trade[]) {
     if (trade.isOpen) {
       openPositions++;
       openValue += pl.totalBuyValue;
+      deployedCapital += pl.totalBuyValue;
       mtmPL += pl.amount; // For now 0, would be actual MTM with live prices
     } else {
       completedTrades++;
@@ -85,7 +87,9 @@ export function calculateTradeMetrics(trades: Trade[]) {
   });
 
   const winRate = completedTrades > 0 ? (winningTrades / completedTrades) * 100 : 0;
-  const totalReturn = totalPortfolioValue > 0 ? (totalPL / totalPortfolioValue) * 100 : 0;
+  const totalReturn = totalCapital > 0 ? (totalPL / totalCapital) * 100 : 0;
+  const freeCapital = Math.max(0, totalCapital - deployedCapital);
+  const capitalUtilization = totalCapital > 0 ? (deployedCapital / totalCapital) * 100 : 0;
 
   return {
     totalPortfolioValue,
@@ -94,6 +98,10 @@ export function calculateTradeMetrics(trades: Trade[]) {
     mtmPL,
     openPositions,
     openValue,
+    deployedCapital,
+    freeCapital,
+    totalCapital,
+    capitalUtilization,
     winRate,
     totalTrades: trades.length,
     totalReturn,
