@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, decimal, date, timestamp, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, decimal, date, timestamp, boolean, serial } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -15,6 +15,12 @@ export const trades = pgTable("trades", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+export const capitalSettings = pgTable("capital_settings", {
+  id: serial("id").primaryKey(),
+  totalCapital: decimal("total_capital", { precision: 15, scale: 2 }).notNull().default('0'),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
 export const insertTradeSchema = createInsertSchema(trades).omit({
   id: true,
   createdAt: true,
@@ -26,5 +32,14 @@ export const insertTradeSchema = createInsertSchema(trades).omit({
   sellDate: z.string().optional(),
 });
 
+export const insertCapitalSchema = createInsertSchema(capitalSettings).omit({
+  id: true,
+  updatedAt: true,
+}).extend({
+  totalCapital: z.coerce.number().min(0, "Capital must be non-negative"),
+});
+
 export type InsertTrade = z.infer<typeof insertTradeSchema>;
 export type Trade = typeof trades.$inferSelect;
+export type InsertCapital = z.infer<typeof insertCapitalSchema>;
+export type CapitalSettings = typeof capitalSettings.$inferSelect;

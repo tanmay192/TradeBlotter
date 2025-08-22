@@ -28,10 +28,10 @@ Preferred communication style: Simple, everyday language.
 - **Development**: Hot reload with Vite integration and comprehensive logging
 
 ### Data Storage Solutions
-- **Database**: PostgreSQL configured through Drizzle ORM
+- **Database**: PostgreSQL with persistent data storage through Drizzle ORM
 - **ORM**: Drizzle ORM for type-safe database operations and schema management
 - **Schema**: Shared TypeScript schemas between frontend and backend using drizzle-zod
-- **Development Storage**: In-memory storage implementation for rapid development and testing
+- **Persistence**: Full data persistence - trades and capital settings survive app restarts
 - **Migrations**: Drizzle Kit for database schema migrations and management
 
 ### Core Data Models
