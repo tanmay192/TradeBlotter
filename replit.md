@@ -54,3 +54,16 @@ Preferred communication style: Simple, everyday language.
 - **Query Optimization**: React Query for intelligent caching and background updates
 - **Responsive Design**: Mobile-first approach with Tailwind CSS breakpoints
 - **Error Boundaries**: Comprehensive error handling at component and API levels
+
+### Deployment & Development
+- **Local Development**: Comprehensive setup guide with PostgreSQL configuration
+- **Replit Deployment**: Optimized for Replit's autoscale deployments with managed PostgreSQL
+- **Alternative Platforms**: Support for Vercel, Railway, Heroku, and DigitalOcean
+- **Documentation**: Complete guides for local setup, deployment, and troubleshooting
+- **Environment Management**: Proper handling of database credentials and environment variables
+
+### Recent Updates
+- **Trading Insights**: Interactive charts showing quarterly and yearly ROI percentages
+- **Chart Visualization**: Bar charts for quarterly data, line charts for yearly trends
+- **Performance Analytics**: Best/worst quarter identification with detailed tooltips
+- **Documentation**: Added README.md, LOCAL_SETUP.md, and DEPLOYMENT.md for comprehensive project guidance
