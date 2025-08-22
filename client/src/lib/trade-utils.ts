@@ -58,7 +58,6 @@ export function calculateTradeMetrics(trades: Trade[], totalCapital: number = 0)
   let totalPortfolioValue = 0;
   let totalPL = 0;
   let bookedPL = 0;
-  let mtmPL = 0;
   let openPositions = 0;
   let openValue = 0;
   let deployedCapital = 0;
@@ -76,26 +75,23 @@ export function calculateTradeMetrics(trades: Trade[], totalCapital: number = 0)
       openPositions++;
       openValue += pl.totalBuyValue;
       deployedCapital += pl.totalBuyValue;
-      mtmPL += pl.amount; // For now 0, would be actual MTM with live prices
     } else {
       completedTrades++;
       bookedPL += pl.amount;
       if (pl.amount > 0) winningTrades++;
+      totalPL += pl.amount;
     }
-    
-    totalPL += pl.amount;
   });
 
   const winRate = completedTrades > 0 ? (winningTrades / completedTrades) * 100 : 0;
-  const totalReturn = totalCapital > 0 ? (totalPL / totalCapital) * 100 : 0;
+  const totalReturn = totalCapital > 0 ? (bookedPL / totalCapital) * 100 : 0;
   const freeCapital = Math.max(0, totalCapital - deployedCapital);
   const capitalUtilization = totalCapital > 0 ? (deployedCapital / totalCapital) * 100 : 0;
 
   return {
     totalPortfolioValue,
-    totalPL,
+    totalPL: bookedPL, // Only include booked P&L
     bookedPL,
-    mtmPL,
     openPositions,
     openValue,
     deployedCapital,
@@ -119,7 +115,7 @@ export function getQuarter(date: string): string {
 export function getQuarterlyAnalytics(trades: Trade[], year: number) {
   const quarters = { Q1: [], Q2: [], Q3: [], Q4: [] } as Record<string, Trade[]>;
   
-  // Group trades by quarter
+  // Group trades by quarter based on buy date
   trades.forEach(trade => {
     const tradeYear = new Date(trade.buyDate).getFullYear();
     if (tradeYear === year) {
@@ -131,14 +127,15 @@ export function getQuarterlyAnalytics(trades: Trade[], year: number) {
   // Calculate metrics for each quarter
   const quarterlyData = {} as Record<string, {
     bookedPL: number;
-    mtmPL: number;
+    openPositions: number;
     returnPercentage: number;
     totalTrades: number;
+    totalInvestment: number;
   }>;
 
   Object.entries(quarters).forEach(([quarter, quarterTrades]) => {
     let bookedPL = 0;
-    let mtmPL = 0;
+    let openPositions = 0;
     let totalInvestment = 0;
     
     quarterTrades.forEach(trade => {
@@ -146,20 +143,21 @@ export function getQuarterlyAnalytics(trades: Trade[], year: number) {
       totalInvestment += pl.totalBuyValue;
       
       if (trade.isOpen) {
-        mtmPL += pl.amount;
+        openPositions++;
       } else {
         bookedPL += pl.amount;
       }
     });
 
-    const totalPL = bookedPL + mtmPL;
-    const returnPercentage = totalInvestment > 0 ? (totalPL / totalInvestment) * 100 : 0;
+    // Return percentage based only on completed trades
+    const returnPercentage = totalInvestment > 0 ? (bookedPL / totalInvestment) * 100 : 0;
 
     quarterlyData[quarter] = {
       bookedPL,
-      mtmPL,
+      openPositions,
       returnPercentage,
       totalTrades: quarterTrades.length,
+      totalInvestment,
     };
   });
 

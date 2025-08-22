@@ -78,9 +78,9 @@ export default function QuarterlyAnalytics() {
                 </div>
               </div>
               <div>
-                <div className="text-slate-600">MTM P&L</div>
-                <div className={`font-semibold ${data.mtmPL >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                  {data.mtmPL >= 0 ? '+' : ''}{formatCurrency(data.mtmPL)}
+                <div className="text-slate-600">Open Positions</div>
+                <div className="font-semibold text-blue-600">
+                  {data.openPositions}
                 </div>
               </div>
               <div>
@@ -90,7 +90,7 @@ export default function QuarterlyAnalytics() {
                 </div>
               </div>
               <div>
-                <div className="text-slate-600">Trades</div>
+                <div className="text-slate-600">Total Trades</div>
                 <div className="font-semibold text-slate-800">{data.totalTrades}</div>
               </div>
             </div>
