@@ -2,7 +2,7 @@
 
 ## Overview
 
-TradeTracker Pro is a comprehensive stock trading portfolio management application that helps users track trades, analyze performance, and manage capital allocation. The system provides real-time portfolio analytics, quarterly performance analysis, and capital management features with a modern web interface.
+TradeTracker Pro is a comprehensive stock trading portfolio management application designed to help traders track their trades, analyze performance, and manage capital allocation. The application provides features for trade management (buy/sell transactions with editable dates and prices), portfolio analytics with quarterly performance analysis, capital management with visual allocation tracking, trading insights through interactive charts, and real-time dashboard monitoring of open positions and closed trades.
 
 ## User Preferences
 
@@ -11,61 +11,27 @@ Preferred communication style: Simple, everyday language.
 ## System Architecture
 
 ### Frontend Architecture
-- **Framework**: React with TypeScript for type-safe development
-- **UI Library**: shadcn/ui components built on Radix UI primitives for accessible, modern interface design
-- **Styling**: Tailwind CSS with custom design tokens and responsive layouts
-- **Routing**: Wouter for lightweight client-side navigation
-- **State Management**: TanStack Query (React Query) for server state caching and synchronization
-- **Forms**: React Hook Form with Zod validation for type-safe form handling
-- **Build System**: Vite for fast development and optimized production builds
+The application uses React with TypeScript as the foundation, providing type safety and modern development practices. Client-side routing is handled by Wouter for lightweight navigation. State management relies on TanStack Query (React Query) for server state management and caching. The UI framework combines Radix UI components with shadcn/ui design system for consistent, accessible components. Styling is implemented with Tailwind CSS using custom CSS variables for theming and responsive design. Form handling uses React Hook Form with Zod validation for robust data validation. The build process is powered by Vite for fast development and optimized production builds.
 
 ### Backend Architecture
-- **Runtime**: Node.js with Express.js for RESTful API services
-- **Language**: TypeScript throughout the stack for end-to-end type safety
-- **API Design**: RESTful endpoints with proper HTTP methods and status codes
-- **Validation**: Shared Zod schemas between frontend and backend for consistent data validation
-- **Error Handling**: Centralized middleware with structured error responses
-- **Development**: Hot module replacement and comprehensive request/response logging
+The backend runs on Node.js with Express.js framework providing RESTful API endpoints. TypeScript is used throughout for full-stack type safety. The API follows RESTful conventions with standard HTTP methods (GET, POST, PATCH, DELETE). Request and response validation is handled by Zod schemas shared between frontend and backend. The system includes centralized error handling middleware with proper HTTP status codes. Development features hot reload through Vite integration with comprehensive logging.
 
 ### Data Storage Solutions
-- **Database**: PostgreSQL with Drizzle ORM for type-safe database operations
-- **Schema Management**: Drizzle Kit for migrations and schema evolution
-- **Connection**: Neon Database serverless PostgreSQL for production hosting
-- **Data Models**: 
-  - Trades table with complete transaction lifecycle tracking
-  - Capital settings for portfolio management
-  - UUID primary keys and decimal precision for financial data
+PostgreSQL serves as the primary database with persistent data storage managed through Drizzle ORM. The ORM provides type-safe database operations and schema management. Database schemas are shared between frontend and backend using drizzle-zod for consistency. The system ensures full data persistence where trades and capital settings survive application restarts. Database schema migrations are handled by Drizzle Kit for version control and deployment management.
 
-### Core Features
-- **Trade Management**: Buy/sell transaction tracking with editable dates, prices, and P&L calculations
-- **Portfolio Analytics**: Quarterly performance analysis (Q1-Q4) with ROI calculations and metrics
-- **Capital Allocation**: Visual tracking of deployed vs. free capital with utilization percentages
-- **Performance Insights**: Interactive charts showing quarterly and yearly returns
-- **Real-time Dashboard**: Live portfolio status with open positions and closed trades
+### Core Data Models
+The Trade model tracks the complete trade lifecycle including buy/sell prices, dates, quantities, and profit/loss calculations. Portfolio Analytics provides quarterly performance analysis, total portfolio value tracking, and return calculations. Trade Status management handles open and closed position tracking with real-time status updates. Capital Management includes total capital tracking, deployed versus free capital allocation, and capital utilization metrics.
+
+### Authentication and Session Management
+The application uses PostgreSQL-backed sessions through connect-pg-simple for reliable session storage and management.
 
 ## External Dependencies
 
-### Database & Infrastructure
-- **Neon Database**: Serverless PostgreSQL hosting with WebSocket connections
-- **Database Driver**: @neondatabase/serverless for optimized serverless connections
-
-### UI Components & Styling
-- **Radix UI**: Complete set of accessible UI primitives (dialogs, forms, navigation, data display)
-- **Tailwind CSS**: Utility-first CSS framework with custom design system
-- **Lucide Icons**: Modern icon library for consistent visual elements
-- **Class Variance Authority**: Type-safe component variants
-
-### Development & Build Tools
-- **Vite**: Fast build tool with HMR and development server
-- **ESBuild**: JavaScript bundler for production builds
-- **TypeScript**: Static type checking across the entire application
-- **Replit Integration**: Cloud development environment with runtime error handling
-
-### Data & Forms
-- **Zod**: Runtime type validation and schema definition
-- **React Hook Form**: Performant form library with minimal re-renders
-- **date-fns**: Date manipulation and formatting utilities
-- **TanStack Query**: Server state management with caching and background updates
-
-### Session Management
-- **connect-pg-simple**: PostgreSQL-backed session storage for user state persistence
+- **Database Provider**: Neon Database provides serverless PostgreSQL for production data storage with automatic scaling and management
+- **UI Component Library**: Radix UI offers a comprehensive set of accessible components including modals, forms, tables, navigation, and interactive elements
+- **Development Tools**: Modern cloud development environment supporting hot reload, debugging, and rapid iteration
+- **Date Handling**: date-fns library for robust date manipulation, formatting, and timezone handling
+- **Data Visualization**: Embla Carousel for implementing interactive charts and data visualization components
+- **Form Validation**: Zod schema validation library ensuring data integrity across the application
+- **HTTP Client**: Built-in fetch API with custom wrapper functions for API communication
+- **Styling Framework**: Tailwind CSS with PostCSS for utility-first styling and responsive design

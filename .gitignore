@@ -129,8 +129,11 @@ tmp/
 *.rar
 
 # Platform specific files
+.replit
 .config/
 .upm/
+replit.nix
+*.repl
 
 # Testing
 coverage/
