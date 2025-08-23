@@ -106,22 +106,29 @@ A comprehensive stock trading portfolio management application that helps you tr
 
 ## Deployment
 
-### Deploy to Replit
+### Deploy to Cloud Platforms
 
-1. **Fork/Import to Replit**
-   - Go to [Replit](https://replit.com)
-   - Import this repository or fork from existing Repl
+**Quick Deploy Options:**
 
-2. **Set Environment Variables**
-   - In Replit, go to the "Secrets" tab
-   - Add your database credentials:
-     ```
-     DATABASE_URL=your_neon_database_url
-     ```
+1. **Deploy to Vercel** (Recommended for serverless)
+   ```bash
+   npm install -g vercel
+   vercel login
+   vercel --prod
+   ```
 
-3. **Deploy**
-   - Replit will automatically handle deployment
-   - Your app will be available at `https://your-repl-name.replit.app`
+2. **Deploy to Railway**
+   - Connect your GitHub repository to Railway
+   - Add PostgreSQL service
+   - Set environment variables
+   - Deploy automatically
+
+3. **Deploy to Heroku**
+   ```bash
+   heroku create your-app-name
+   heroku addons:create heroku-postgresql:mini
+   git push heroku main
+   ```
 
 ### Deploy to Other Platforms
 

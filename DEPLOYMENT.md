@@ -1,56 +1,51 @@
 # Deployment Guide - TradeTracker Pro
 
-## Replit Deployment (Recommended)
+## Cloud Platform Deployment
 
-### 1. Setting Up on Replit
+### 1. Vercel Deployment (Recommended)
 
-**Option A: Fork Existing Project**
-1. Go to [Replit](https://replit.com)
-2. Fork this repository or import from GitHub
-3. Replit will automatically detect the Node.js project
+**Setup and Deploy:**
+```bash
+# Install Vercel CLI
+npm install -g vercel
 
-**Option B: Create New Repl**
-1. Click "Create Repl"
-2. Select "Node.js" template
-3. Import your code or copy files
+# Login to Vercel
+vercel login
 
-### 2. Database Setup on Replit
+# Deploy to production
+vercel --prod
+```
 
-1. **Add PostgreSQL Database**
-   - In your Repl, click on "Database" in the sidebar
-   - Select "PostgreSQL" 
-   - Replit will create a managed database for you
-   - Connection details are automatically set as environment variables
+**Environment Variables:**
+Add in Vercel Dashboard:
+```
+DATABASE_URL=your_postgresql_url
+NODE_ENV=production
+```
 
-2. **Environment Variables** (Auto-configured)
+### 2. Railway Deployment
+
+1. **Connect Repository**
+   - Go to [Railway](https://railway.app)
+   - Connect your GitHub repository
+
+2. **Add Database**
+   - Click "New Service" → "PostgreSQL"
+   - Copy connection URL
+
+3. **Set Variables**
    ```
-   DATABASE_URL - Full connection string
-   PGHOST - Database host
-   PGPORT - Database port (5432)
-   PGUSER - Database user
-   PGPASSWORD - Database password
-   PGDATABASE - Database name
+   DATABASE_URL=${{Postgres.DATABASE_URL}}
+   NODE_ENV=production
    ```
 
 ### 3. Initialize Database Schema
 
-Run in Replit Shell:
+Run in your deployment platform's console:
 ```bash
 npm install
 npm run db:push
 ```
-
-### 4. Deploy Your Application
-
-**Autoscale Deployment (Recommended)**
-1. Click the "Deploy" button in your Repl
-2. Select "Autoscale Deployment"
-3. Configure deployment settings:
-   - **Run Command**: `npm run dev` or `npm start`
-   - **Build Command**: `npm run build` (if needed)
-4. Click "Deploy"
-
-Your app will be live at: `https://your-repl-name.replit.app`
 
 ## Alternative Cloud Platforms
 
@@ -156,12 +151,12 @@ Your app includes basic health endpoints:
 - `GET /api/trades` - Database connectivity
 
 ### Database Backups
-- **Replit**: Automatic backups included
+- **Cloud Platforms**: Most providers include automatic backups
 - **Railway/Heroku**: Configure periodic backups
 - **Self-hosted**: Setup pg_dump cron jobs
 
 ### Scaling
-- **Replit Autoscale**: Automatic scaling based on traffic
+- **Cloud Autoscale**: Automatic scaling based on traffic
 - **Vercel**: Serverless scaling by default
 - **Railway**: Configure auto-scaling in dashboard
 
@@ -179,7 +174,7 @@ Your app includes basic health endpoints:
    ```typescript
    // Add to server/index.ts for production
    app.use(cors({
-     origin: process.env.FRONTEND_URL || 'https://yourapp.replit.app',
+     origin: process.env.FRONTEND_URL || 'https://yourapp.example.com',
      credentials: true
    }));
    ```
@@ -210,7 +205,7 @@ Your app includes basic health endpoints:
    ```
 
 ### Logs and Debugging
-- **Replit**: Check console in workspace
+- **Cloud Platforms**: Check platform console/logs
 - **Vercel**: View function logs in dashboard
 - **Railway**: Check deployment logs
 - **Heroku**: `heroku logs --tail`

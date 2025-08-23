@@ -2,7 +2,7 @@
 
 ## Overview
 
-TradeTracker Pro is a comprehensive stock trading portfolio management application built with React and Express. The application allows users to track their stock trades, monitor portfolio performance, analyze quarterly trading patterns, and manage both open and closed positions. It features capital management with cash allocation tracking, a modern dashboard interface with real-time trade management capabilities, detailed performance analytics, and a visual pie chart showing deployed vs. free capital.
+TradeTracker Pro is a comprehensive stock trading portfolio management application that helps users track trades, analyze performance, and manage capital allocation. The system provides real-time portfolio analytics, quarterly performance analysis, and capital management features with a modern web interface.
 
 ## User Preferences
 
@@ -11,59 +11,61 @@ Preferred communication style: Simple, everyday language.
 ## System Architecture
 
 ### Frontend Architecture
-- **Framework**: React with TypeScript for type safety and modern development practices
-- **Routing**: Wouter for lightweight client-side routing
-- **State Management**: TanStack Query (React Query) for server state management and caching
-- **UI Framework**: Radix UI components with shadcn/ui design system for consistent, accessible components
-- **Styling**: Tailwind CSS with custom CSS variables for theming and responsive design
-- **Forms**: React Hook Form with Zod validation for robust form handling and data validation
-- **Build Tool**: Vite for fast development and optimized production builds
+- **Framework**: React with TypeScript for type-safe development
+- **UI Library**: shadcn/ui components built on Radix UI primitives for accessible, modern interface design
+- **Styling**: Tailwind CSS with custom design tokens and responsive layouts
+- **Routing**: Wouter for lightweight client-side navigation
+- **State Management**: TanStack Query (React Query) for server state caching and synchronization
+- **Forms**: React Hook Form with Zod validation for type-safe form handling
+- **Build System**: Vite for fast development and optimized production builds
 
 ### Backend Architecture
-- **Runtime**: Node.js with Express.js framework for RESTful API development
-- **Language**: TypeScript for full-stack type safety
-- **API Design**: RESTful endpoints following conventional HTTP methods (GET, POST, PATCH, DELETE)
-- **Validation**: Zod schemas for request/response validation shared between frontend and backend
-- **Error Handling**: Centralized error middleware with proper HTTP status codes
-- **Development**: Hot reload with Vite integration and comprehensive logging
+- **Runtime**: Node.js with Express.js for RESTful API services
+- **Language**: TypeScript throughout the stack for end-to-end type safety
+- **API Design**: RESTful endpoints with proper HTTP methods and status codes
+- **Validation**: Shared Zod schemas between frontend and backend for consistent data validation
+- **Error Handling**: Centralized middleware with structured error responses
+- **Development**: Hot module replacement and comprehensive request/response logging
 
 ### Data Storage Solutions
-- **Database**: PostgreSQL with persistent data storage through Drizzle ORM
-- **ORM**: Drizzle ORM for type-safe database operations and schema management
-- **Schema**: Shared TypeScript schemas between frontend and backend using drizzle-zod
-- **Persistence**: Full data persistence - trades and capital settings survive app restarts
-- **Migrations**: Drizzle Kit for database schema migrations and management
+- **Database**: PostgreSQL with Drizzle ORM for type-safe database operations
+- **Schema Management**: Drizzle Kit for migrations and schema evolution
+- **Connection**: Neon Database serverless PostgreSQL for production hosting
+- **Data Models**: 
+  - Trades table with complete transaction lifecycle tracking
+  - Capital settings for portfolio management
+  - UUID primary keys and decimal precision for financial data
 
-### Core Data Models
-- **Trades**: Complete trade lifecycle tracking including buy/sell prices, dates, quantities, and P&L calculations
-- **Portfolio Analytics**: Quarterly performance analysis, total portfolio value, and return calculations
-- **Trade Status**: Open and closed position tracking with real-time status updates
-- **Capital Management**: Total capital tracking, deployed vs. free capital allocation, and capital utilization metrics
+### Core Features
+- **Trade Management**: Buy/sell transaction tracking with editable dates, prices, and P&L calculations
+- **Portfolio Analytics**: Quarterly performance analysis (Q1-Q4) with ROI calculations and metrics
+- **Capital Allocation**: Visual tracking of deployed vs. free capital with utilization percentages
+- **Performance Insights**: Interactive charts showing quarterly and yearly returns
+- **Real-time Dashboard**: Live portfolio status with open positions and closed trades
 
-### External Dependencies
-- **Database Provider**: Neon Database (serverless PostgreSQL) for production data storage
-- **Session Management**: PostgreSQL-backed sessions using connect-pg-simple
-- **UI Components**: Comprehensive Radix UI component library for modals, forms, tables, and navigation
-- **Date Handling**: date-fns for robust date manipulation and formatting
-- **Charts**: Embla Carousel for data visualization components
-- **Development Tools**: Replit-specific tooling for cloud development environment optimization
+## External Dependencies
 
-### Security & Performance
-- **Type Safety**: End-to-end TypeScript implementation with shared schemas
-- **Validation**: Runtime validation using Zod at API boundaries
-- **Query Optimization**: React Query for intelligent caching and background updates
-- **Responsive Design**: Mobile-first approach with Tailwind CSS breakpoints
-- **Error Boundaries**: Comprehensive error handling at component and API levels
+### Database & Infrastructure
+- **Neon Database**: Serverless PostgreSQL hosting with WebSocket connections
+- **Database Driver**: @neondatabase/serverless for optimized serverless connections
 
-### Deployment & Development
-- **Local Development**: Comprehensive setup guide with PostgreSQL configuration
-- **Replit Deployment**: Optimized for Replit's autoscale deployments with managed PostgreSQL
-- **Alternative Platforms**: Support for Vercel, Railway, Heroku, and DigitalOcean
-- **Documentation**: Complete guides for local setup, deployment, and troubleshooting
-- **Environment Management**: Proper handling of database credentials and environment variables
+### UI Components & Styling
+- **Radix UI**: Complete set of accessible UI primitives (dialogs, forms, navigation, data display)
+- **Tailwind CSS**: Utility-first CSS framework with custom design system
+- **Lucide Icons**: Modern icon library for consistent visual elements
+- **Class Variance Authority**: Type-safe component variants
 
-### Recent Updates
-- **Trading Insights**: Interactive charts showing quarterly and yearly ROI percentages
-- **Chart Visualization**: Bar charts for quarterly data, line charts for yearly trends
-- **Performance Analytics**: Best/worst quarter identification with detailed tooltips
-- **Documentation**: Added README.md, LOCAL_SETUP.md, and DEPLOYMENT.md for comprehensive project guidance
+### Development & Build Tools
+- **Vite**: Fast build tool with HMR and development server
+- **ESBuild**: JavaScript bundler for production builds
+- **TypeScript**: Static type checking across the entire application
+- **Replit Integration**: Cloud development environment with runtime error handling
+
+### Data & Forms
+- **Zod**: Runtime type validation and schema definition
+- **React Hook Form**: Performant form library with minimal re-renders
+- **date-fns**: Date manipulation and formatting utilities
+- **TanStack Query**: Server state management with caching and background updates
+
+### Session Management
+- **connect-pg-simple**: PostgreSQL-backed session storage for user state persistence
