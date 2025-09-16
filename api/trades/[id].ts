@@ -73,24 +73,49 @@ async function handleGet(req: VercelRequest, res: VercelResponse, id: string) {
 
 async function handlePatch(req: VercelRequest, res: VercelResponse, id: string) {
   try {
-    const validatedData = insertTradeSchema.partial().parse(req.body);
+    // Parse body robustly (Vercel may give you a string)
+    const raw = typeof req.body === 'string'
+      ? (req.body ? JSON.parse(req.body) : {})
+      : (req.body ?? {});
+
+    // Accept flexible input but coerce to Drizzle column types
+    // (adjust the field names to exactly match your schema)
+    const update = {
+      ...(raw.scripName !== undefined && { scripName: String(raw.scripName) }),
+      ...(raw.quantity  !== undefined && { quantity: Number(raw.quantity) }),
+
+      // numeric -> string in Drizzle PG
+      ...(raw.buyPrice  !== undefined && { buyPrice: String(raw.buyPrice) }),
+      ...(raw.sellPrice !== undefined && { sellPrice: String(raw.sellPrice) }),
+
+      // timestamp -> Date
+      ...(raw.buyDate   !== undefined && { buyDate: new Date(raw.buyDate) }),
+      ...(raw.sellDate  !== undefined && { sellDate: new Date(raw.sellDate) }),
+
+      ...(raw.isOpen    !== undefined && { isOpen: Boolean(raw.isOpen) }),
+    } as Partial<typeof trades.$inferInsert>; // ensure the shape matches table
+
     const [updatedTrade] = await db
       .update(trades)
-      .set(validatedData)
+      .set(update)
       .where(eq(trades.id, id))
       .returning();
 
     if (!updatedTrade) {
       return res.status(404).json({ error: 'Trade not found' });
     }
-
     return res.status(200).json(updatedTrade);
   } catch (error) {
+    if (error instanceof SyntaxError) {
+      return res.status(400).json({ error: 'Invalid JSON body' });
+    }
     if (error instanceof z.ZodError) {
+      // if you still want zod validation, validate `raw` first with a flexible schema
       const validationError = fromZodError(error);
       return res.status(400).json({ error: validationError.message });
     }
-    throw error;
+    console.error(error);
+    return res.status(400).json({ error: 'Update failed' });
   }
 }
 
