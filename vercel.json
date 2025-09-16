@@ -8,5 +8,5 @@
     { "src": "/api/(.*)", "dest": "/api/$1" },
     { "src": "/(.*)", "dest": "/dist/public/$1" }
   ],
-  "buildCommand": "npm run build"
+  "buildCommand": "npm run build:vercel"
 }
