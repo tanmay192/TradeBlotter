@@ -11,6 +11,13 @@ import { trades, insertTradeSchema, type Trade, type InsertTrade } from '../shar
 // Configure Neon for serverless
 neonConfig.webSocketConstructor = ws;
 
+function getJsonBody(req: VercelRequest) {
+  if (typeof req.body === 'string') {
+    return req.body ? JSON.parse(req.body) : {};
+  }
+  return req.body ?? {};
+}
+
 if (!process.env.DATABASE_URL) {
   throw new Error('DATABASE_URL must be set');
 }
@@ -64,7 +71,8 @@ async function handleGet(req: VercelRequest, res: VercelResponse) {
 
 async function handlePost(req: VercelRequest, res: VercelResponse) {
   try {
-    const validatedData = insertTradeSchema.parse(req.body);
+    const raw = getJsonBody(req);
+    const validatedData = insertTradeSchema.parse(raw);
     
     // Convert numbers to strings for decimal fields
     const dbData = {

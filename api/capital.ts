@@ -9,6 +9,13 @@ import { capitalSettings } from '../shared/schema';
 // Configure Neon for serverless
 neonConfig.webSocketConstructor = ws;
 
+function getJsonBody(req: VercelRequest) {
+  if (typeof req.body === 'string') {
+    return req.body ? JSON.parse(req.body) : {};
+  }
+  return req.body ?? {};
+}
+
 if (!process.env.DATABASE_URL) {
   throw new Error('DATABASE_URL must be set');
 }
@@ -43,6 +50,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       case 'GET':
         return handleGet(req, res);
       case 'POST':
+      case 'PATCH':
         return handlePost(req, res);
       default:
         return res.status(405).json({ error: 'Method not allowed' });
@@ -72,7 +80,8 @@ async function handleGet(req: VercelRequest, res: VercelResponse) {
 
 async function handlePost(req: VercelRequest, res: VercelResponse) {
   try {
-    const { totalCapital } = updateCapitalSchema.parse(req.body);
+    const raw = getJsonBody(req);
+    const { totalCapital } = updateCapitalSchema.parse(raw);
     
     // Convert to string for decimal field
     const totalCapitalStr = totalCapital.toString();
